@@ -246,11 +246,11 @@ class config {
     }
     function save(){
         global $fm_file;
-        $config_string = "<?php".chr(13).chr(10)."//".json_encode($this->data).chr(13).chr(10);
+        $config_string = "&lt;?php".chr(13).chr(10)."//".json_encode($this->data).chr(13).chr(10);
         if (is_file($fm_file)){
             $lines = file($fm_file);
             $script_start_line = 1;
-            if (strpos($lines[0],'<?php') === 0 && strpos($lines[1],'//{"') === 0) $script_start_line = 2;
+            if (strpos($lines[0],'&lt;?php') === 0 && strpos($lines[1],'//{"') === 0) $script_start_line = 2;
             if ($fh = @fopen($fm_file, "w")){
                 @fputs($fh,$config_string,strlen($config_string));
                 for ($x=$script_start_line;$x<count($lines);$x++) @fputs($fh,$lines[$x],strlen($lines[$x]));
@@ -267,7 +267,7 @@ class config {
             $line2 = fgets($fh);
             $line3 = fgets($fh);
             fclose($fh);
-            if (strpos($line1,'<?php') === 0 && strpos($line2,'//{"') === 0){
+            if (strpos($line1,'&lt;?php') === 0 && strpos($line2,'//{"') === 0){
                 $config_string = trim(substr($line2,2));
                 if (strlen($config_string)) $data = object_to_array(json_decode($config_string));
             }
@@ -1879,14 +1879,14 @@ function frame2(){
     echo "</form>";
     echo "</td></tr>";
     echo "<tr valign=top><td>";
-    ?>
-        <script type="text/javascript" src="<?php echo $fm_path_info['basename']; ?>?action=99&filename=jquery-1.11.1.min.js"></script>
-        <script type="text/javascript" src="<?php echo $fm_path_info['basename']; ?>?action=99&filename=jstree.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo $fm_path_info['basename']; ?>?action=99&filename=jstree.style.min.css" media="screen" />
+    ?&rt;
+        <script type="text/javascript" src="&lt;?php echo $fm_path_info['basename']; ?&rt;?action=99&filename=jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="&lt;?php echo $fm_path_info['basename']; ?&rt;?action=99&filename=jstree.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="&lt;?php echo $fm_path_info['basename']; ?&rt;?action=99&filename=jstree.style.min.css" media="screen" />
         <style>
             #tree { float:left; overflow:auto; padding:0; margin-bottom: 20px;}
-            #tree .folder { background:url('<?php echo $fm_path_info['basename']; ?>?action=99&filename=file_sprite.png') right bottom no-repeat; }
-            #tree .file { background:url('<?php echo $fm_path_info['basename']; ?>?action=99&filename=file_sprite.png') 0 0 no-repeat; }
+            #tree .folder { background:url('&lt;?php echo $fm_path_info['basename']; ?&rt;?action=99&filename=file_sprite.png') right bottom no-repeat; }
+            #tree .file { background:url('&lt;?php echo $fm_path_info['basename']; ?&rt;?action=99&filename=file_sprite.png') 0 0 no-repeat; }
             #tree .file-pdf { background-position: -32px 0 }
             #tree .file-as { background-position: -36px 0 }
             #tree .file-c { background-position: -72px -0px }
@@ -1913,14 +1913,14 @@ function frame2(){
         <div id="container" role="main">
             <div id="tree"></div>
         </div>
-        <?php
+        &lt;?php
             $tree_auto_load_nodes = substr($fm_current_dir,strlen($fm_current_root));
             $tree_auto_load_nodes = trim($tree_auto_load_nodes,DIRECTORY_SEPARATOR);
             $tree_auto_load_nodes = explode(DIRECTORY_SEPARATOR,$tree_auto_load_nodes);
-        ?>
+        ?&rt;
         <script>
         var tree_loaded = false;
-        var tree_auto_load_nodes = <?php echo json_encode($tree_auto_load_nodes); ?>;
+        var tree_auto_load_nodes = &lt;?php echo json_encode($tree_auto_load_nodes); ?&rt;;
         var tree_auto_load_node_curr = 0;
         function highlight_broken_links(){
             $("#tree a:contains('(L*)')").css({'color':'red'});
@@ -1956,7 +1956,7 @@ function frame2(){
                 .jstree({
                     'core' : {
                         'data' : {
-                            'url' : '?frame=2&fm_current_root=<?php echo rawurlencode($fm_current_root) ?>&operation=get_node',
+                            'url' : '?frame=2&fm_current_root=&lt;?php echo rawurlencode($fm_current_root) ?&rt;&operation=get_node',
                             'data' : function (node) {
                                 return { 'id' : node.id };
                             }
@@ -1990,7 +1990,7 @@ function frame2(){
                         }
                     },
                     'massload' : {
-                        'url' : '?frame=2&fm_current_root=<?php echo rawurlencode($fm_current_root) ?>&operation=get_node',
+                        'url' : '?frame=2&fm_current_root=&lt;?php echo rawurlencode($fm_current_root) ?&rt;&operation=get_node',
                         'data' : function (nodes) {
                             return { 'ids' : nodes.join(',') };
                         }
@@ -2001,8 +2001,8 @@ function frame2(){
                 if (!tree_loaded) return;
                 if (data && data.selected && data.selected.length) {
                     var path = String(data.selected[0]);
-                    path = path.replace(/\//g,'<?php echo addslashes(DIRECTORY_SEPARATOR); ?>');
-                    go_tree('<?php echo addslashes(rtrim($fm_current_root,DIRECTORY_SEPARATOR)); ?>'+path);
+                    path = path.replace(/\//g,'&lt;?php echo addslashes(DIRECTORY_SEPARATOR); ?&rt;');
+                    go_tree('&lt;?php echo addslashes(rtrim($fm_current_root,DIRECTORY_SEPARATOR)); ?&rt;'+path);
                 }
             })
             .on('loaded.jstree', function (e, data) {
@@ -2010,7 +2010,7 @@ function frame2(){
             });
         });
         </script>
-    <?php
+    &lt;?php
     echo "</td></tr>";
     echo "</table>\n";
     echo "</body>\n</html>";
@@ -4837,7 +4837,7 @@ function shell_form(){
             }
             $shell_current_dir = $fm_current_dir;
             if (strlen($_COOKIE['shell_current_dir'])) $shell_current_dir = $_COOKIE['shell_current_dir'];
-            ?>
+            ?&rt;
             <body marginwidth="0" marginheight="0">
                 <style>
                     .cmd, .cmd div, .cmd span, .terminal, .terminal span, .terminal-output span {
@@ -4864,7 +4864,7 @@ function shell_form(){
                         out += '└'+rep('─',max_str_length+2)+'┘'+br;
                         return out;
                     }
-                    var shell_current_dir = '<?php echo addslashes(rtrim($shell_current_dir,DIRECTORY_SEPARATOR)); ?>';
+                    var shell_current_dir = '&lt;?php echo addslashes(rtrim($shell_current_dir,DIRECTORY_SEPARATOR)); ?&rt;';
                     jQuery(document).ready(function($) {
                         $('body').terminal(
                             function(command, term) {
@@ -4875,7 +4875,7 @@ function shell_form(){
                                     var timestamp = new Date().getTime();
                                     $.ajax({
                                         type: 'POST',
-                                        url: '<?php echo $fm_path_info['basename']; ?>?action=9&shell_form=1&fm_current_dir='+shell_current_dir,
+                                        url: '&lt;?php echo $fm_path_info['basename']; ?&rt;?action=9&shell_form=1&fm_current_dir='+shell_current_dir,
                                         dataType: 'json',
                                         crossDomain: false,
                                         data: JSON.stringify(
@@ -4903,10 +4903,10 @@ function shell_form(){
                                 }
                             },
                             {
-                                greetings: get_boxed_text('<?php echo implode('\n',$greetings)?>'),
+                                greetings: get_boxed_text('&lt;?php echo implode('\n',$greetings)?&rt;'),
                                 prompt: function(callback) {
                                     //console.log(shell_current_dir);
-                                    callback('<?php echo $prompt_start; ?>'+shell_current_dir+'<?php echo $prompt_end; ?>');
+                                    callback('&lt;?php echo $prompt_start; ?&rt;'+shell_current_dir+'&lt;?php echo $prompt_end; ?&rt;');
                                 },
                                 name: 'shell',
                                 tabcompletion: true,
@@ -4925,7 +4925,7 @@ function shell_form(){
                         );
                     });
                 </script>
-            <?php
+            &lt;?php
             echo "</body>\n</html>";
         break;
     }
